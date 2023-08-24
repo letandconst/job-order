@@ -25,9 +25,13 @@ const upload = multer({
 });
 
 app.get('/', product.getAllProducts);
+
 app.get('/:id', product.getProduct);
+
 app.post('/add', upload.single('productImage'), product.addProduct);
+
 app.put('/:id', upload.single('productImage'), product.updateProduct);
+
 app.delete('/:id', product.deleteProduct);
 
 module.exports = app;

@@ -43,6 +43,8 @@ exports.updateProduct = async (req, res) => {
 		const { id } = req.params;
 		const { stockQuantity, ...updateData } = req.body;
 
+		updateData.updatedAt = new Date();
+
 		if (stockQuantity !== undefined) {
 			await Product.findByIdAndUpdate(id, { stockQuantity });
 		}
