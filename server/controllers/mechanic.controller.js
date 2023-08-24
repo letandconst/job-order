@@ -7,7 +7,7 @@ exports.add = async (req, res) => {
 		let profileImage;
 
 		if (req.file) {
-			const result = await cloudinary.uploader.upload(req.file.path, { folder: 'mechanics/image' });
+			const result = await cloudinary.uploader.upload(req.file.path, { folder: 'images/mechanics' });
 			profileImage = result.secure_url;
 		} else {
 			profileImage = 'https://w7.pngwing.com/pngs/389/25/png-transparent-emoji-hug-emoticon-emoji-face-smile-emoji-love-smiley-sticker-thumbnail.png';

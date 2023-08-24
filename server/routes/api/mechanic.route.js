@@ -5,7 +5,7 @@ const multer = require('multer');
 const mechanic = require('../../controllers/mechanic.controller');
 
 const storage = multer.diskStorage({
-	destination: './public/uploads',
+	destination: './public/uploads/mechanics',
 	filename: (req, file, cb) => {
 		const fileName = file.originalname.toLowerCase().split(' ').join('-');
 		cb(null, file.fieldname + '-' + fileName);
