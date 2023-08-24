@@ -68,7 +68,7 @@ exports.updateJobOrder = async (req, res) => {
 			return res.status(404).json({ message: 'Job not found' });
 		}
 
-		if (jobToUpdate.status === 'Pending' && newStatus === 'In Progress') {
+		if ((jobToUpdate.status === 'Pending' && newStatus === 'In Progress') || (jobToUpdate.status === 'Pending' && newStatus === 'Completed')) {
 			jobToUpdate.status = newStatus;
 
 			// Deduct product stockQuantity
@@ -93,16 +93,31 @@ exports.updateJobOrder = async (req, res) => {
 
 		if (req.body.products) {
 			jobToUpdate.products = req.body.products;
+
+			// Recalculate totalProductPrice based on updated products
+			let totalProductPrice = 0;
+			for (const product of jobToUpdate.products) {
+				const productDoc = await Products.findById(product.ProductID);
+				if (productDoc) {
+					totalProductPrice += productDoc.price * product.Quantity;
+				}
+			}
+			jobToUpdate.totalProductPrice = totalProductPrice;
 		}
 
 		if (req.body.workRequested) {
 			jobToUpdate.workRequested = req.body.workRequested;
+
 			// Recalculate total labor based on updated workRequested
-			jobToUpdate.totalLabor = req.body.workRequested.reduce((total, request) => total + request.labor, 0);
+			const totalLabor = req.body.workRequested.reduce((total, request) => total + request.labor, 0);
+			jobToUpdate.totalLabor = totalLabor;
 		}
 
 		// Update status
 		jobToUpdate.status = newStatus;
+
+		// Recalculate total price
+		jobToUpdate.totalPrice = jobToUpdate.totalLabor + jobToUpdate.totalProductPrice;
 
 		await jobToUpdate.save();
 		res.json(jobToUpdate);

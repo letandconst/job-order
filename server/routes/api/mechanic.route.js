@@ -24,14 +24,14 @@ const upload = multer({
 	},
 });
 
+app.get('/:id', mechanic.get);
+
+app.get('/', mechanic.getAll);
+
 app.post('/add', upload.single('profileImage'), mechanic.add);
 
 app.put('/edit/:id', upload.single('profileImage'), mechanic.update);
 
 app.delete('/delete/:id', mechanic.delete);
-
-app.get('/:id', mechanic.get);
-
-app.get('/', mechanic.getAll);
 
 module.exports = app;

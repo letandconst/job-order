@@ -17,6 +17,7 @@ const MechanicSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	totalJobs: Number,
 	profileImage: String,
 	createdAt: String,
 });

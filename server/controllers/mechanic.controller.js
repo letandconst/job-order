@@ -1,4 +1,5 @@
 const Mechanic = require('../models/mechanic.model');
+const Job = require('../models/job.model');
 const cloudinary = require('cloudinary').v2;
 
 exports.add = async (req, res) => {
@@ -56,7 +57,7 @@ exports.update = async (req, res) => {
 			return res.status(404).json({ error: 'Mechanic not found' });
 		}
 
-		res.status(200).json(updatedMechanic);
+		res.json(updatedMechanic);
 	} catch (error) {
 		res.status(500).json({ error: 'Could not update mechanic' });
 	}
@@ -79,7 +80,19 @@ exports.get = async (req, res) => {
 			return res.status(404).json({ error: 'Mechanic not found' });
 		}
 
-		res.status(200).json(mechanic);
+		const assignedJobs = await Job.find({ assignedMechanic: mechanic._id });
+
+		console.log(assignedJobs);
+
+		const jobs = assignedJobs.map((job) => {
+			return {
+				workRequested: job.workRequested,
+				customerName: job.customerName,
+				carModel: job.carModel,
+			};
+		});
+
+		res.json({ mechanic, assignedJobs: jobs });
 	} catch (error) {
 		res.status(500).json({ error: 'Could not get mechanic' });
 	}
@@ -88,7 +101,7 @@ exports.get = async (req, res) => {
 exports.getAll = async (req, res) => {
 	try {
 		const mechanics = await Mechanic.find();
-		res.status(200).json(mechanics);
+		res.json(mechanics);
 	} catch (error) {
 		res.status(500).json({ error: 'Could not get mechanics' });
 	}
