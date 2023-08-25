@@ -1,13 +1,86 @@
-import { useState } from 'react';
-import { Link as href } from 'react-router-dom';
-import { Flex, Box, FormControl, InputGroup, InputRightElement, Stack, Button, Heading, Text, useColorModeValue, Link } from '@chakra-ui/react';
+import { ChangeEvent, FormEvent, useState } from 'react';
+import { Link as href, useNavigate } from 'react-router-dom';
+import { Flex, Box, useToast, FormControl, InputGroup, InputRightElement, Stack, Button, Heading, Text, useColorModeValue, Link } from '@chakra-ui/react';
 
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
 import Input from '../../components/Input/Input';
+import axios, { AxiosError } from 'axios';
+
+const initialState = {
+	fullName: '',
+	username: '',
+	email: '',
+	password: '',
+};
+
+interface ErrorResponse {
+	error: string;
+}
 
 const Register = () => {
+	const history = useNavigate();
+	const toast = useToast();
+
 	const [showPassword, setShowPassword] = useState(false);
+	const [user, setUser] = useState(initialState);
+
+	const { fullName, email, username, password } = user;
+
+	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+		const { name, value } = e.target;
+		setUser({ ...user, [name]: value });
+	};
+
+	const handleSubmit = async (e: FormEvent) => {
+		e.preventDefault();
+		try {
+			const res = await axios.post('http://localhost:5000/api/user/register', {
+				fullName,
+				username,
+				email,
+				password,
+			});
+
+			setUser({
+				...user,
+			});
+
+			toast({
+				position: 'top-right',
+				title: res.data.message,
+				status: 'success',
+				duration: 1500,
+			});
+
+			setTimeout(() => {
+				history('/login');
+			}, 1600);
+
+			setTimeout(() => {
+				setUser({
+					fullName: '',
+					email: '',
+					username: '',
+					password: '',
+				});
+			}, 100);
+		} catch (error) {
+			const axiosError = error as AxiosError;
+			if (axiosError.response && axiosError.response.data) {
+				const responseData = axiosError.response.data as ErrorResponse;
+				const message = responseData.error;
+
+				toast({
+					position: 'top-right',
+					title: message,
+					status: 'error',
+					duration: 1500,
+				});
+			}
+		}
+	};
+
 	return (
 		<Flex
 			minH={'100vh'}
@@ -41,13 +114,15 @@ const Register = () => {
 					boxShadow={'lg'}
 					p={8}
 				>
-					<form>
+					<form onSubmit={handleSubmit}>
 						<Stack spacing={4}>
 							<FormControl id='fullName'>
 								<Input
 									label='Full Name'
 									type='text'
 									name='fullName'
+									value={fullName}
+									onChange={handleChange}
 								/>
 							</FormControl>
 							<FormControl id='email'>
@@ -55,6 +130,8 @@ const Register = () => {
 									label='Email address'
 									type='email'
 									name='email'
+									value={email}
+									onChange={handleChange}
 								/>
 							</FormControl>
 							<FormControl id='username'>
@@ -62,6 +139,8 @@ const Register = () => {
 									label='Username'
 									type='text'
 									name='username'
+									value={username}
+									onChange={handleChange}
 								/>
 							</FormControl>
 							<FormControl id='password'>
@@ -70,6 +149,8 @@ const Register = () => {
 										label='Password'
 										type={showPassword ? 'text' : 'password'}
 										name='password'
+										value={password}
+										onChange={handleChange}
 									/>
 									<InputRightElement h={'108px'}>
 										<Button

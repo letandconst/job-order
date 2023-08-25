@@ -1,9 +1,79 @@
-import { Link as href } from 'react-router-dom';
-import { Button, Flex, FormControl, Stack, useColorModeValue, Link, Heading, Box, Text } from '@chakra-ui/react';
+import { useState, ChangeEvent, FormEvent } from 'react';
+import axios, { AxiosError } from 'axios';
+import { useNavigate, Link as href } from 'react-router-dom';
+import { Button, Flex, useToast, FormControl, Stack, useColorModeValue, Link, Heading, Box, Text } from '@chakra-ui/react';
 
 import Input from '../../components/Input/Input';
 
+const initialState = {
+	username: '',
+	password: '',
+};
+
+interface ErrorResponse {
+	msg: string;
+}
+
 const Login = () => {
+	const history = useNavigate();
+	const toast = useToast();
+	const [user, setUser] = useState(initialState);
+
+	const { username, password } = user;
+
+	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+		const { name, value } = e.target;
+		setUser({ ...user, [name]: value });
+	};
+
+	const handleSubmit = async (e: FormEvent) => {
+		e.preventDefault();
+		try {
+			const res = await axios.post('http://localhost:5000/api/user/login', {
+				username,
+				password,
+			});
+
+			setUser({
+				...user,
+			});
+
+			toast({
+				position: 'top-right',
+				title: res.data.msg,
+				status: 'success',
+				duration: 1500,
+			});
+
+			localStorage.setItem('isAuthenticated', 'true');
+			localStorage.setItem('user', res.data.user.fullName);
+
+			setTimeout(() => {
+				history('/');
+			}, 1600);
+		} catch (error) {
+			const axiosError = error as AxiosError;
+			if (axiosError.response && axiosError.response.data) {
+				const responseData = axiosError.response.data as ErrorResponse;
+				const message = responseData.msg;
+
+				toast({
+					position: 'top-right',
+					title: message,
+					status: 'error',
+					duration: 1500,
+				});
+
+				setTimeout(() => {
+					setUser({
+						username: '',
+						password: '',
+					});
+				}, 1500);
+			}
+		}
+	};
+
 	return (
 		<>
 			<Flex
@@ -36,13 +106,15 @@ const Login = () => {
 						boxShadow={'lg'}
 						p={8}
 					>
-						<form>
+						<form onSubmit={handleSubmit}>
 							<Stack spacing={4}>
 								<FormControl>
 									<Input
 										label='Username'
 										type='text'
 										name='username'
+										value={username}
+										onChange={handleChange}
 									/>
 								</FormControl>
 								<FormControl>
@@ -50,6 +122,8 @@ const Login = () => {
 										label='Password'
 										type='password'
 										name='password'
+										value={password}
+										onChange={handleChange}
 									/>
 								</FormControl>
 								<Stack spacing={4}>
