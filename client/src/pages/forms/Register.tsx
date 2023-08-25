@@ -2,7 +2,7 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import { Link as href, useNavigate } from 'react-router-dom';
 import { Flex, Box, useToast, FormControl, InputGroup, InputRightElement, Stack, Button, Heading, Text, useColorModeValue, Link } from '@chakra-ui/react';
 
-import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import { BiShow, BiHide } from 'react-icons/bi';
 
 import Input from '../../components/Input/Input';
 import axios, { AxiosError } from 'axios';
@@ -152,12 +152,17 @@ const Register = () => {
 										value={password}
 										onChange={handleChange}
 									/>
-									<InputRightElement h={'108px'}>
+									<InputRightElement top='32px'>
 										<Button
 											variant={'ghost'}
 											onClick={() => setShowPassword((showPassword) => !showPassword)}
+											minW='unset'
+											height='40px'
+											_hover={{
+												bg: 'transparent',
+											}}
 										>
-											{showPassword ? <ViewIcon /> : <ViewOffIcon />}
+											{showPassword ? <BiShow /> : <BiHide />}
 										</Button>
 									</InputRightElement>
 								</InputGroup>
