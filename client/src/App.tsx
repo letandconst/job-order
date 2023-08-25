@@ -2,8 +2,6 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import ComponentsLibrary from './pages/components-library';
 
-import Main from './pages/Main';
-
 // Auth Guard
 import AuthRedirect from './utils/AuthRedirect';
 import ProtectedRoute from './utils/ProtectedRoute';
@@ -14,6 +12,12 @@ import Register from './pages/forms/Register';
 
 // Layout
 import Layout from './components/Layout/Layout';
+
+// Pages
+import Main from './pages/Main';
+import Mechanics from './pages/Mechanics';
+import Products from './pages/Products';
+import JobOrders from './pages/JobOrders';
 
 function App() {
 	return (
@@ -42,6 +46,30 @@ function App() {
 							element={
 								<Layout>
 									<Main />
+								</Layout>
+							}
+						/>
+						<Route
+							path='/job-orders'
+							element={
+								<Layout>
+									<JobOrders />
+								</Layout>
+							}
+						/>
+						<Route
+							path='/products'
+							element={
+								<Layout>
+									<Products />
+								</Layout>
+							}
+						/>
+						<Route
+							path='/mechanics'
+							element={
+								<Layout>
+									<Mechanics />
 								</Layout>
 							}
 						/>
