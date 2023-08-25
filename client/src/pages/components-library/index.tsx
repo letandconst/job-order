@@ -1,7 +1,7 @@
-import Button from '../components/Button/Button';
-import Input from '../components/Input/Input';
+import Button from '../../components/Button/Button';
+import Input from '../../components/Input/Input';
 import { Badge, Box, Card, CardBody } from '@chakra-ui/react';
-import Select from '../components/Select/Select';
+import Select from '../../components/Select/Select';
 
 const ComponentsLibrary = () => {
 	const components = [
