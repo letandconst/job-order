@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from 'react-router-dom';
 
 const ProtectedRoute = () => {
-	const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+	const isAuthenticated = localStorage.getItem('isAuthenticated');
 
 	if (!isAuthenticated) {
 		return (
