@@ -12,6 +12,9 @@ import ProtectedRoute from './utils/ProtectedRoute';
 import Login from './pages/forms/Login';
 import Register from './pages/forms/Register';
 
+// Layout
+import Layout from './components/Layout/Layout';
+
 function App() {
 	return (
 		<>
@@ -36,7 +39,11 @@ function App() {
 					<Route element={<ProtectedRoute />}>
 						<Route
 							path='/'
-							element={<Main />}
+							element={
+								<Layout>
+									<Main />
+								</Layout>
+							}
 						/>
 					</Route>
 				</Routes>
