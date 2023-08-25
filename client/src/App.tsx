@@ -1,6 +1,9 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import ComponentsLibrary from './pages';
+import ComponentsLibrary from './pages/components-library';
+import Login from './pages/forms/Login';
+import Register from './pages/forms/Register';
+
 function App() {
 	return (
 		<>
@@ -9,6 +12,14 @@ function App() {
 					<Route
 						path='/components-library'
 						element={<ComponentsLibrary />}
+					/>
+					<Route
+						path='/'
+						element={<Login />}
+					/>
+					<Route
+						path='/register'
+						element={<Register />}
 					/>
 				</Routes>
 			</Router>
