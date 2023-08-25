@@ -8,7 +8,7 @@ interface InputFieldProps {
 	label: string;
 	defaultValue?: string | number;
 	isReadOnly?: boolean;
-	placeholder: string;
+	placeholder?: string;
 }
 
 const Input = ({ type, name, value, onChange, label, defaultValue, isReadOnly, placeholder }: InputFieldProps) => {
