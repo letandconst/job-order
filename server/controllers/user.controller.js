@@ -1,5 +1,21 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
+
+require('dotenv').config();
+
+function generateToken(user) {
+	return jwt.sign(
+		{
+			id: user.id,
+			username: user.username,
+		},
+		process.env.TOKEN_SECRET,
+		{
+			expiresIn: '1h',
+		}
+	);
+}
 
 exports.register = async (req, res) => {
 	try {
@@ -34,10 +50,12 @@ exports.register = async (req, res) => {
 			createdAt: new Date().toISOString(),
 		});
 
-		await user.save();
+		const result = await user.save();
+		const token = generateToken(result);
 
 		res.json({
 			message: 'User registered successfully ✔',
+			token,
 		});
 	} catch (error) {
 		return res.status(500).json({ message: error.message });
@@ -56,7 +74,9 @@ exports.login = async (req, res) => {
 		const isMatch = await bcrypt.compare(password, user.password);
 		if (!isMatch) return res.status(400).json({ msg: 'Invalid username or password' });
 
-		res.json({ msg: 'Login Success!' });
+		const token = generateToken(user);
+
+		res.json({ msg: 'Login Success!', token, user });
 	} catch (error) {
 		return res.status(500).json({ msg: error.message });
 	}
