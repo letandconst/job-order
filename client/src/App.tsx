@@ -1,7 +1,17 @@
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
+import ComponentsLibrary from './pages';
 function App() {
 	return (
 		<>
-			<h1>Hello World!</h1>
+			<Router>
+				<Routes>
+					<Route
+						path='/components-library'
+						element={<ComponentsLibrary />}
+					/>
+				</Routes>
+			</Router>
 		</>
 	);
 }
