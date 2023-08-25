@@ -1,10 +1,11 @@
 import { Input as ChakraInput, FormLabel } from '@chakra-ui/react';
+import { ChangeEvent } from 'react';
 
 interface InputFieldProps {
 	type: string;
 	name: string;
 	value?: string | number;
-	onChange?: () => void;
+	onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 	label: string;
 	defaultValue?: string | number;
 	isReadOnly?: boolean;
