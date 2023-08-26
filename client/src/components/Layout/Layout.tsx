@@ -67,7 +67,7 @@ const SidebarContent = ({ onClose, display, ...rest }: SidebarProps) => {
 					px={{ base: 4, md: 4 }}
 				>
 					<Image
-						src='logo.png'
+						src='/logo.png'
 						height='100%'
 						mx={{
 							base: '0',
@@ -215,7 +215,7 @@ const MobileNav = ({ onOpen, ...rest }: { onOpen: () => void }) => {
 			}}
 		>
 			<Image
-				src='logo.png'
+				src='/logo.png'
 				height='100%'
 			/>
 			<Icon
