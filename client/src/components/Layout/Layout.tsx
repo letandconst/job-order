@@ -1,5 +1,5 @@
 import { Link as href } from 'react-router-dom';
-import { Avatar, Box, CloseButton, Flex, Icon, useColorModeValue, Link, Drawer, DrawerContent, useDisclosure, Image, MenuButton, HStack, Menu, MenuDivider, MenuItem, MenuList, VStack } from '@chakra-ui/react';
+import { Avatar, Box, CloseButton, Flex, Icon, useColorModeValue, Link, Drawer, DrawerContent, useDisclosure, Image, MenuButton, HStack, Menu, MenuDivider, MenuItem, MenuList, CardBody, Card } from '@chakra-ui/react';
 
 import { BiSolidDashboard, BiSolidWrench, BiTask, BiCube, BiMenu } from 'react-icons/bi';
 
@@ -258,8 +258,15 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 			<Box
 				ml={{ base: 0, md: 60 }}
 				p='4'
+				sx={{
+					'.chakra-card': {
+						borderRadius: '0',
+					},
+				}}
 			>
-				{children}
+				<Card>
+					<CardBody>{children}</CardBody>
+				</Card>
 			</Box>
 		</Box>
 	);
