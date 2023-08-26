@@ -1,15 +1,22 @@
 import { HStack, IconButton } from '@chakra-ui/react';
 
-import { BiPencil, BiTrash } from 'react-icons/bi';
+import { BiShowAlt, BiPencil, BiTrash } from 'react-icons/bi';
 
 interface ActionButtonsProps {
+	onView: () => void;
 	onEdit: () => void;
 	onDelete: () => void;
 }
 
-const ActionButton = ({ onEdit, onDelete }: ActionButtonsProps) => {
+const ActionButton = ({ onView, onEdit, onDelete }: ActionButtonsProps) => {
 	return (
 		<HStack spacing={4}>
+			<IconButton
+				onClick={onView}
+				colorScheme='green'
+				aria-label='View Details'
+				icon={<BiShowAlt />}
+			/>
 			<IconButton
 				onClick={onEdit}
 				colorScheme='yellow'
