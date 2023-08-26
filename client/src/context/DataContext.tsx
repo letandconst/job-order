@@ -13,6 +13,7 @@ interface Mechanic {
 }
 
 interface Products {
+	_id: string;
 	name: string;
 	description: string;
 	price: number;
@@ -42,6 +43,9 @@ interface JobOrder {
 	workRequested: WorkRequested[];
 	createdAt: string;
 	status: string;
+	totalLabor: number;
+	totalProductPrice: number;
+	totalPrice: number;
 }
 
 interface Option {

@@ -2,11 +2,11 @@
 
 import { useNavigate } from 'react-router-dom';
 
-import Table from '../components/DataTable/Table';
-import { jobOrdersColumn } from '../components/DataTable/DataTableColumns/jobOrdersColumn';
-import { useData } from '../context/DataContext';
-import ActionButton from '../components/DataTable/ActionButtons/ActionButton';
-import { ProductsData } from './Products';
+import Table from '../../components/DataTable/Table';
+import { jobOrdersColumn } from '../../components/DataTable/DataTableColumns/jobOrdersColumn';
+import { useData } from '../../context/DataContext';
+import ActionButton from '../../components/DataTable/ActionButtons/ActionButton';
+import { ProductsData } from '../Products';
 
 interface WorkRequested {
 	request: string;

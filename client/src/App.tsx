@@ -17,8 +17,8 @@ import Layout from './components/Layout/Layout';
 import Main from './pages/Main';
 import Mechanics from './pages/Mechanics';
 import Products from './pages/Products';
-import JobOrders from './pages/JobOrders';
-import ViewJobOrder from './pages/modules/ViewJobOrder';
+import JobOrders from './pages/JobOrder/JobOrders';
+import ViewJobOrder from './pages/JobOrder/modules/ViewJobOrder';
 
 function App() {
 	return (

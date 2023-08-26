@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useParams } from 'react-router';
-import { useData } from '../../context/DataContext';
+import { useData } from '../../../context/DataContext';
 
-import { Box, Flex } from '@chakra-ui/react';
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Flex, Input } from '@chakra-ui/react';
 import dayjs from 'dayjs';
+import TabularData from './TabularData';
 
 const Row = ({ label, index, value }: { label: string; index?: number; value: any }) => (
 	<Flex
@@ -50,7 +51,6 @@ const ViewJobOrder = () => {
 	const currentJob = jobOrders.find((jobOrder) => jobOrder._id === path.id);
 
 	const assignedMechanic = mechanics.find((mechanic) => mechanic._id === currentJob?.assignedMechanic);
-	console.log('assigned', assignedMechanic);
 
 	const customerDetails = [
 		{ label: 'Customer Name', value: currentJob?.customerName },
@@ -62,6 +62,9 @@ const ViewJobOrder = () => {
 		{ label: 'Mechanic', value: assignedMechanic?.firstName + ' ' + assignedMechanic?.lastName },
 		{ label: 'Status', value: currentJob?.status },
 	];
+
+	const workRequestedTable = ['Work Requested', 'Amount'];
+	const productsTable = ['Qty', 'Name', 'Amount'];
 
 	return (
 		<>
@@ -119,12 +122,90 @@ const ViewJobOrder = () => {
 							</Flex>
 						</Box>
 					</Flex>
+					<Flex
+						gap='32px'
+						mt='32px'
+					>
+						<Accordion
+							allowToggle
+							width='100%'
+							defaultIndex={[0]}
+						>
+							<AccordionItem>
+								<h2>
+									<AccordionButton>
+										<Box
+											as='span'
+											flex='1'
+											textAlign='left'
+											fontWeight='700'
+										>
+											Work Requested
+										</Box>
+										<AccordionIcon />
+									</AccordionButton>
+								</h2>
+								<AccordionPanel pb={4}>
+									<TabularData
+										tableHeader={workRequestedTable}
+										text='Total Labor'
+										total={currentJob.totalLabor}
+										data={currentJob.workRequested}
+									/>
+								</AccordionPanel>
+							</AccordionItem>
+
+							<AccordionItem>
+								<h2>
+									<AccordionButton>
+										<Box
+											as='span'
+											flex='1'
+											textAlign='left'
+											fontWeight='700'
+										>
+											Availed Parts
+										</Box>
+										<AccordionIcon />
+									</AccordionButton>
+								</h2>
+								<AccordionPanel pb={4}>
+									<TabularData
+										tableHeader={productsTable}
+										text='Total'
+										total={currentJob.totalProductPrice}
+										data={currentJob.products}
+									/>
+								</AccordionPanel>
+							</AccordionItem>
+							<AccordionItem>
+								<h2>
+									<AccordionButton>
+										<Box
+											as='span'
+											flex='1'
+											textAlign='left'
+											fontWeight='700'
+										>
+											Total Charges
+										</Box>
+										<AccordionIcon />
+									</AccordionButton>
+								</h2>
+								<AccordionPanel pb={4}>
+									<Input
+										placeholder='Basic usage'
+										readOnly
+										value={currentJob.totalPrice.toFixed(2)}
+										textAlign='right'
+										fontWeight='700'
+									/>
+								</AccordionPanel>
+							</AccordionItem>
+						</Accordion>
+					</Flex>
 				</>
 			) : (
-				// <p>Status: {status}</p>
-				// 	<p>Total Labor: {totalLabor.toFixed(2)}</p>
-				// 	<p>Total Price: {totalPrice.toFixed(2)}</p>
-				// 	<p>Total Products: {totalProductPrice.toFixed(2)}</p>
 				<p>Error fetching data</p>
 			)}
 		</>
