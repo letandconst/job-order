@@ -14,6 +14,10 @@ export interface ProductsData {
 const Products = () => {
 	const { products } = useData();
 
+	const handleShow = () => {
+		console.log('show');
+	};
+
 	const handleEdit = (selected: ProductsData) => {
 		console.log(selected);
 	};
@@ -28,6 +32,7 @@ const Products = () => {
 				...column,
 				Cell: ({ row }: any) => (
 					<ActionButton
+						onView={() => handleShow}
 						onEdit={() => handleEdit(row.original)}
 						onDelete={() => handleDelete(row.original)}
 					/>

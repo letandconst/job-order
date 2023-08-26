@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
+import { useNavigate } from 'react-router-dom';
+
 import Table from '../components/DataTable/Table';
 import { jobOrdersColumn } from '../components/DataTable/DataTableColumns/jobOrdersColumn';
 import { useData } from '../context/DataContext';
@@ -26,6 +29,11 @@ interface JobOrdersData {
 
 const JobOrders = () => {
 	const { jobOrders } = useData();
+	const navigate = useNavigate();
+
+	const handleShow = async (selectedId: string) => {
+		navigate(`/job-orders/${selectedId}`);
+	};
 
 	const handleEdit = (selected: JobOrdersData) => {
 		console.log(selected);
@@ -41,6 +49,7 @@ const JobOrders = () => {
 				...column,
 				Cell: ({ row }: any) => (
 					<ActionButton
+						onView={() => handleShow(row.original._id)}
 						onEdit={() => handleEdit(row.original)}
 						onDelete={() => handleDelete(row.original)}
 					/>

@@ -18,65 +18,73 @@ import Main from './pages/Main';
 import Mechanics from './pages/Mechanics';
 import Products from './pages/Products';
 import JobOrders from './pages/JobOrders';
+import ViewJobOrder from './pages/modules/ViewJobOrder';
 
 function App() {
 	return (
-		<>
-			<Router>
-				<Routes>
+		<Router>
+			<Routes>
+				<Route
+					path='/components-library'
+					element={<ComponentsLibrary />}
+				/>
+
+				<Route element={<AuthRedirect />}>
 					<Route
-						path='/components-library'
-						element={<ComponentsLibrary />}
+						path='/login'
+						element={<Login />}
+					/>
+					<Route
+						path='/register'
+						element={<Register />}
+					/>
+				</Route>
+
+				<Route element={<ProtectedRoute />}>
+					<Route
+						path='/'
+						element={
+							<Layout>
+								<Main />
+							</Layout>
+						}
+					/>
+					<Route
+						path='/job-orders'
+						element={
+							<Layout>
+								<JobOrders />
+							</Layout>
+						}
+					/>
+					<Route
+						path='/job-orders/:id'
+						element={
+							<Layout>
+								<ViewJobOrder />
+							</Layout>
+						}
 					/>
 
-					<Route element={<AuthRedirect />}>
-						<Route
-							path='/login'
-							element={<Login />}
-						/>
-						<Route
-							path='/register'
-							element={<Register />}
-						/>
-					</Route>
-
-					<Route element={<ProtectedRoute />}>
-						<Route
-							path='/'
-							element={
-								<Layout>
-									<Main />
-								</Layout>
-							}
-						/>
-						<Route
-							path='/job-orders'
-							element={
-								<Layout>
-									<JobOrders />
-								</Layout>
-							}
-						/>
-						<Route
-							path='/products'
-							element={
-								<Layout>
-									<Products />
-								</Layout>
-							}
-						/>
-						<Route
-							path='/mechanics'
-							element={
-								<Layout>
-									<Mechanics />
-								</Layout>
-							}
-						/>
-					</Route>
-				</Routes>
-			</Router>
-		</>
+					<Route
+						path='/products'
+						element={
+							<Layout>
+								<Products />
+							</Layout>
+						}
+					/>
+					<Route
+						path='/mechanics'
+						element={
+							<Layout>
+								<Mechanics />
+							</Layout>
+						}
+					/>
+				</Route>
+			</Routes>
+		</Router>
 	);
 }
 

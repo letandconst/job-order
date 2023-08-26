@@ -15,6 +15,10 @@ interface MechanicData {
 const Mechanics = () => {
 	const { mechanics } = useData();
 
+	const handleShow = () => {
+		console.log('show');
+	};
+
 	const handleEdit = (selected: MechanicData) => {
 		console.log(selected);
 	};
@@ -29,6 +33,7 @@ const Mechanics = () => {
 				...column,
 				Cell: ({ row }: any) => (
 					<ActionButton
+						onView={() => handleShow}
 						onEdit={() => handleEdit(row.original)}
 						onDelete={() => handleDelete(row.original)}
 					/>
