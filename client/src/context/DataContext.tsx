@@ -31,6 +31,7 @@ interface WorkRequested {
 }
 
 interface JobOrder {
+	_id: string;
 	customerName: string;
 	address: string;
 	carModel: string;
@@ -39,6 +40,8 @@ interface JobOrder {
 	assignedMechanic: string;
 	products: SelectedProducts[];
 	workRequested: WorkRequested[];
+	createdAt: string;
+	status: string;
 }
 
 interface Option {
@@ -56,11 +59,12 @@ interface DataContextValues {
 	products: Products[];
 	mechanicOptions: Option[];
 	jobStatus: { label: number; value: string }[];
+	api: string;
 }
 
 const Context = createContext<DataContextValues | undefined>(undefined);
 
-const api = 'http://localhost:5000/api';
+const api = import.meta.env.VITE_API_URL;
 
 export function useData() {
 	const context = useContext(Context);
@@ -122,6 +126,7 @@ const DataContext = ({ children }: DataContextProps) => {
 		products,
 		mechanicOptions,
 		jobStatus,
+		api,
 	};
 
 	return <Context.Provider value={contextValues}>{children}</Context.Provider>;
