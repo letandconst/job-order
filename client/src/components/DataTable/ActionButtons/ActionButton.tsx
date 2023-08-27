@@ -3,19 +3,20 @@ import { HStack, IconButton } from '@chakra-ui/react';
 import { BiShowAlt, BiPencil, BiTrash } from 'react-icons/bi';
 
 interface ActionButtonsProps {
-	onView: () => void;
+	onView?: () => void;
 	onEdit: () => void;
 	onDelete: () => void;
 }
 
 const ActionButton = ({ onView, onEdit, onDelete }: ActionButtonsProps) => {
 	return (
-		<HStack spacing={4}>
+		<HStack spacing='8px'>
 			<IconButton
 				onClick={onView}
 				colorScheme='green'
 				aria-label='View Details'
 				icon={<BiShowAlt />}
+				display={onView ? 'flex' : 'none'}
 			/>
 			<IconButton
 				onClick={onEdit}
