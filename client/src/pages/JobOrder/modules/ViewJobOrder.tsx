@@ -2,7 +2,7 @@
 import { useParams } from 'react-router';
 import { useData } from '../../../context/DataContext';
 
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Flex, Input } from '@chakra-ui/react';
+import { Text, Box, Flex, Divider } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import TabularData from './TabularData';
 
@@ -36,7 +36,7 @@ const Row = ({ label, index, value }: { label: string; index?: number; value: an
 		<Box
 			className='value'
 			flex={{ base: '1 0 100%', lg: '1 1 10px' }}
-			borderBottom='1px solid #000000'
+			borderBottom='1px solid #1e1e1e'
 			padding='0 0 8px'
 		>
 			{value}
@@ -63,8 +63,26 @@ const ViewJobOrder = () => {
 		{ label: 'Status', value: currentJob?.status },
 	];
 
-	const workRequestedTable = ['Work Requested', 'Amount'];
-	const productsTable = ['Qty', 'Name', 'Amount'];
+	const allData = [
+		{
+			tableLabel: 'Work Requested',
+			tableData: {
+				header: ['Work Requested', 'Amount'],
+				totalLabel: 'Total Labor',
+				total: currentJob?.totalLabor,
+				data: currentJob?.workRequested,
+			},
+		},
+		{
+			tableLabel: 'Availed Parts',
+			tableData: {
+				header: ['Qty', 'Name', 'Amount'],
+				totalLabel: 'Total',
+				total: currentJob?.totalProductPrice,
+				data: currentJob?.products,
+			},
+		},
+	];
 
 	return (
 		<>
@@ -73,16 +91,19 @@ const ViewJobOrder = () => {
 					<Flex
 						gap={{
 							base: '0',
-							lg: '100px',
+							xl: '100px',
 						}}
 						flexDir={{
 							base: 'column',
-							lg: 'row',
+							xl: 'row',
 						}}
 					>
 						<Box
 							w='100%'
-							maxW='500px'
+							maxW={{
+								base: '100%',
+								xl: '500px',
+							}}
 						>
 							{customerDetails.slice(0, -3).map((detail, index) => (
 								<Row
@@ -94,7 +115,10 @@ const ViewJobOrder = () => {
 						</Box>
 						<Box
 							w='100%'
-							maxW='500px'
+							maxW={{
+								base: '100%',
+								xl: '350px',
+							}}
 						>
 							<Flex
 								flexDir='column'
@@ -122,87 +146,62 @@ const ViewJobOrder = () => {
 							</Flex>
 						</Box>
 					</Flex>
+					<Divider
+						my='32px'
+						bg='#1e1e1e'
+						opacity='1'
+						py='1px'
+					/>
 					<Flex
-						gap='32px'
-						mt='32px'
+						flexDir={{
+							base: 'column',
+							xl: 'row',
+						}}
+						gap={{
+							base: '32px',
+							xl: '64px',
+						}}
 					>
-						<Accordion
-							allowToggle
-							width='100%'
-							defaultIndex={[0]}
-						>
-							<AccordionItem>
-								<h2>
-									<AccordionButton>
-										<Box
-											as='span'
-											flex='1'
-											textAlign='left'
-											fontWeight='700'
-										>
-											Work Requested
-										</Box>
-										<AccordionIcon />
-									</AccordionButton>
-								</h2>
-								<AccordionPanel pb={4}>
+						{allData &&
+							allData.map((data, i) => (
+								<Box
+									key={i}
+									_notFirst={{
+										marginTop: {
+											base: '32px',
+											lg: '0',
+										},
+									}}
+									w='100%'
+								>
+									<Text fontWeight='700'>{data.tableLabel}</Text>
 									<TabularData
-										tableHeader={workRequestedTable}
-										text='Total Labor'
-										total={currentJob.totalLabor}
-										data={currentJob.workRequested}
+										tableHeader={data.tableData.header}
+										text={data.tableData.totalLabel}
+										total={data.tableData.total}
+										data={data.tableData.data}
 									/>
-								</AccordionPanel>
-							</AccordionItem>
-
-							<AccordionItem>
-								<h2>
-									<AccordionButton>
-										<Box
-											as='span'
-											flex='1'
-											textAlign='left'
-											fontWeight='700'
-										>
-											Availed Parts
-										</Box>
-										<AccordionIcon />
-									</AccordionButton>
-								</h2>
-								<AccordionPanel pb={4}>
-									<TabularData
-										tableHeader={productsTable}
-										text='Total'
-										total={currentJob.totalProductPrice}
-										data={currentJob.products}
-									/>
-								</AccordionPanel>
-							</AccordionItem>
-							<AccordionItem>
-								<h2>
-									<AccordionButton>
-										<Box
-											as='span'
-											flex='1'
-											textAlign='left'
-											fontWeight='700'
-										>
-											Total Charges
-										</Box>
-										<AccordionIcon />
-									</AccordionButton>
-								</h2>
-								<AccordionPanel pb={4}>
-									<Input
-										placeholder='Basic usage'
-										readOnly
-										value={currentJob.totalPrice.toFixed(2)}
-										textAlign='right'
-										fontWeight='700'
-									/>
-								</AccordionPanel>
-							</AccordionItem>
-						</Accordion>
+								</Box>
+							))}
+					</Flex>
+					<Divider
+						my='32px'
+						bg='#1e1e1e'
+						opacity='1'
+						py='1px'
+					/>
+					<Flex
+						alignItems='flex-end'
+						gap='32px'
+						fontWeight='700'
+						fontSize='24px'
+						bg='#1e1e1e'
+						color='#ffffff'
+						p='24px'
+						justifyContent='space-between'
+					>
+						<Box minW='max-content'>Total Amount: </Box>
+						<Box>{currentJob.totalPrice.toFixed(2)}</Box>
 					</Flex>
 				</>
 			) : (
