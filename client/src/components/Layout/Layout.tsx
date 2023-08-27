@@ -50,7 +50,7 @@ const SidebarContent = ({ onClose, display, ...rest }: SidebarProps) => {
 			bg='#1E1E1E'
 			borderRight='1px'
 			borderRightColor={useColorModeValue('gray.200', 'gray.500')}
-			w={{ base: 'full', md: 60 }}
+			w={{ base: 'full', md: '400px' }}
 			pos='fixed'
 			h='full'
 			{...rest}
@@ -256,16 +256,26 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 			{/* mobilenav */}
 			<MobileNav onOpen={onOpen} />
 			<Box
-				ml={{ base: 0, md: 60 }}
-				p='4'
+				ml={{ base: 0, md: '400px' }}
+				p='32px'
 				sx={{
 					'.chakra-card': {
 						borderRadius: '0',
 					},
 				}}
 			>
-				<Card>
-					<CardBody>{children}</CardBody>
+				<Box
+					fontSize='36px'
+					fontWeight='700'
+					textTransform='uppercase'
+				>
+					Job Order Details
+				</Box>
+				<Card
+					mt='32px'
+					boxShadow='none'
+				>
+					<CardBody p='0'>{children}</CardBody>
 				</Card>
 			</Box>
 		</Box>
