@@ -11,7 +11,7 @@ exports.add = async (req, res) => {
 			const result = await cloudinary.uploader.upload(req.file.path, { folder: 'images/mechanics' });
 			profileImage = result.secure_url;
 		} else {
-			profileImage = 'https://w7.pngwing.com/pngs/389/25/png-transparent-emoji-hug-emoticon-emoji-face-smile-emoji-love-smiley-sticker-thumbnail.png';
+			profileImage = 'https://res.cloudinary.com/dle7cxxwp/image/upload/v1693145459/images/image-placeholder_wip8xx.png';
 		}
 
 		if (!firstName || !lastName || !address || !mobileNumber) {

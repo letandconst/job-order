@@ -10,7 +10,7 @@ exports.addProduct = async (req, res) => {
 			const result = await cloudinary.uploader.upload(req.file.path, { folder: 'images/products' });
 			productImage = result.secure_url;
 		} else {
-			productImage = 'https://www.recia.fr/wp-content/uploads/2019/09/no_image.png';
+			productImage = 'https://res.cloudinary.com/dle7cxxwp/image/upload/v1693145459/images/product-placeholder_kvv4u3.png';
 		}
 
 		if (!name || !description || price === undefined || stockQuantity === undefined) {
