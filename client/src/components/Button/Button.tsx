@@ -4,16 +4,18 @@ import { type PropsWithChildren } from 'react';
 interface ButtonProps {
 	bgColor: string;
 	textColor?: string;
-	onClick: () => void;
+	onClick?: () => void;
+	type?: 'submit' | 'reset';
 }
 
-const Button = ({ bgColor, textColor, children, onClick }: PropsWithChildren<ButtonProps>) => {
+const Button = ({ bgColor, textColor, children, onClick, type }: PropsWithChildren<ButtonProps>) => {
 	return (
 		<>
 			<ChakraButton
 				colorScheme={bgColor}
 				textColor={textColor}
 				onClick={onClick}
+				type={type}
 			>
 				{children}
 			</ChakraButton>
