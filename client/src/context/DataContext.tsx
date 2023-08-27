@@ -1,5 +1,4 @@
-/* eslint-disable react-refresh/only-export-components */
-import { createContext, useEffect, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useEffect, useState, useContext, ReactNode } from 'react';
 import axios from 'axios';
 
 interface Mechanic {
@@ -64,12 +63,16 @@ interface DataContextValues {
 	mechanicOptions: Option[];
 	jobStatus: { label: number; value: string }[];
 	api: string;
+	handleCloseModal: () => void;
+	showModal: boolean;
+	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Context = createContext<DataContextValues | undefined>(undefined);
 
 const api = import.meta.env.VITE_API_URL;
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useData() {
 	const context = useContext(Context);
 	if (!context) {
@@ -83,6 +86,10 @@ const DataContext = ({ children }: DataContextProps) => {
 	const [jobOrders, setJobOrders] = useState<JobOrder[]>([]);
 	const [products, setProducts] = useState([]);
 	const [mechanicOptions, setMechanicOptions] = useState<Option[]>([]);
+
+	const [showModal, setShowModal] = useState(false);
+
+	const handleCloseModal = () => setShowModal(false);
 
 	const jobStatus = [
 		{
@@ -131,6 +138,9 @@ const DataContext = ({ children }: DataContextProps) => {
 		mechanicOptions,
 		jobStatus,
 		api,
+		showModal,
+		setShowModal,
+		handleCloseModal,
 	};
 
 	return <Context.Provider value={contextValues}>{children}</Context.Provider>;
