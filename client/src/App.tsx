@@ -16,7 +16,7 @@ import Layout from './components/Layout/Layout';
 // Pages
 import Main from './pages/Main';
 import Mechanics from './pages/Mechanics';
-import Products from './pages/Products';
+import ProductsPage from './pages/Products/Products';
 import JobOrders from './pages/JobOrder/JobOrders';
 import ViewJobOrder from './pages/JobOrder/modules/ViewJobOrder';
 
@@ -70,7 +70,7 @@ function App() {
 						path='/products'
 						element={
 							<Layout>
-								<Products />
+								<ProductsPage />
 							</Layout>
 						}
 					/>
