@@ -8,9 +8,37 @@ import AlertModal from '../../components/Modal/AlertModal';
 import Modal from '../../components/Modal/Modal';
 import { Box } from '@chakra-ui/react';
 import UpdateProduct from './modules/UpdateProduct';
+import Button from '../../components/Button/Button';
+import AddNewProduct from './modules/AddNewProduct';
 
 const ProductsPage = () => {
-	const { products, setProducts, showEditModal, setShowEditModal, showDeleteModal, setShowDeleteModal, handleCloseModal, selectedRow, setSelectedRow, api, updateProduct } = useData();
+	const { products, setProducts, showModal, setShowModal, showEditModal, setShowEditModal, showDeleteModal, setShowDeleteModal, handleCloseModal, selectedRow, setSelectedRow, api, updateProduct } = useData();
+
+	const handleAdd = async (addProduct: Products) => {
+		try {
+			const formData = new FormData();
+
+			Object.entries(addProduct).forEach(([key, value]) => {
+				if (key === 'image') {
+					formData.append('productImage', value);
+				} else {
+					formData.append(key, value);
+				}
+			});
+
+			const res = await axios.post(`${api}/product/add`, formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			});
+
+			setProducts((prevProducts) => [...prevProducts, res.data]);
+
+			setShowEditModal(false);
+		} catch (error) {
+			console.error('Error updating:', error);
+		}
+	};
 
 	const handleEdit = async (updatedProduct: Products) => {
 		try {
@@ -83,10 +111,18 @@ const ProductsPage = () => {
 			>
 				Products
 			</Box>
-			<Table
-				columns={columns}
-				data={products}
-			/>
+			<Box>
+				<Button
+					bgColor='green'
+					onClick={() => setShowModal(true)}
+				>
+					Add New
+				</Button>
+				<Table
+					columns={columns}
+					data={products}
+				/>
+			</Box>
 			<AlertModal
 				isOpen={showDeleteModal}
 				onClose={handleCloseModal}
@@ -101,6 +137,17 @@ const ProductsPage = () => {
 					selectedRow={selectedRow}
 					onCancel={handleCloseModal}
 					onUpdate={handleEdit}
+				/>
+			</Modal>
+
+			<Modal
+				modalTitle='Add New Item'
+				isOpen={showModal}
+				onClose={handleCloseModal}
+			>
+				<AddNewProduct
+					onCancel={handleCloseModal}
+					onAdd={handleAdd}
 				/>
 			</Modal>
 		</>

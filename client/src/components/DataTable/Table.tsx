@@ -26,7 +26,20 @@ const Table = ({ columns, data }: DataTableProps) => {
 		usePagination
 	);
 
-	const { getTableProps, getTableBodyProps, headerGroups, page, prepareRow } = tableInstance;
+	const {
+		getTableProps,
+		getTableBodyProps,
+		headerGroups,
+		page,
+		prepareRow,
+		state: { pageIndex, pageSize },
+		gotoPage,
+		nextPage,
+		previousPage,
+		canNextPage,
+		canPreviousPage,
+		pageCount,
+	} = tableInstance;
 
 	const imageExtensions = ['.jpg', '.jpeg', '.png', '.webp'];
 
@@ -75,10 +88,7 @@ const Table = ({ columns, data }: DataTableProps) => {
 												/>
 											</Td>
 										);
-									} else if (typeof cell.value === 'number' && cell.column.Header === 'Price') {
-										return <Td {...cell.getCellProps()}>{cell.value.toFixed(2)}</Td>;
 									}
-
 									return <Td {...cell.getCellProps()}>{cell.render('Cell')}</Td>;
 								})}
 							</Tr>

@@ -16,9 +16,7 @@ const UpdateProduct = ({ selectedRow, onCancel, onUpdate }: SelectedRowData) => 
 
 	const [updatedData, setUpdatedData] = useState(selectedRow);
 
-	const handleImageUpload = (image: File) => {
-		console.log('Image uploaded:', image);
-
+	const handleImageUpload = (image: string) => {
 		setUpdatedData((prevData) => ({
 			...prevData,
 			productImage: image,

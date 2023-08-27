@@ -18,7 +18,7 @@ export interface Products {
 	description: string;
 	price: number;
 	stockQuantity: number;
-	productImage: File;
+	productImage: any;
 }
 
 interface SelectedProducts {

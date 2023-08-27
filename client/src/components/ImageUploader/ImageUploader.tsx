@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
 import { Box, Image, Flex, Icon } from '@chakra-ui/react';
 import { BiUpload } from 'react-icons/bi';
 
 interface ImageUploaderProps {
-	onImageUpload: (image: File) => void;
-	currentImage?: File | string;
+	onImageUpload: (image: any) => void;
+	currentImage?: string;
 }
 
 const ImageUploader = ({ onImageUpload, currentImage }: ImageUploaderProps) => {
@@ -36,9 +37,18 @@ const ImageUploader = ({ onImageUpload, currentImage }: ImageUploaderProps) => {
 			onMouseLeave={() => setIsHovered(false)}
 		>
 			<>
-				{!selectedImage && (
+				{!selectedImage && currentImage && (
 					<Image
 						src={currentImage ? currentImage : '/image-placeholder.png'}
+						w='100%'
+						objectFit='contain'
+						h='100%'
+					/>
+				)}
+
+				{!currentImage && (
+					<Image
+						src={'/product-placeholder.png'}
 						w='100%'
 						objectFit='contain'
 						h='100%'
