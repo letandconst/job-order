@@ -32,6 +32,6 @@ app.post('/add', upload.single('profileImage'), mechanic.add);
 
 app.put('/edit/:id', upload.single('profileImage'), mechanic.update);
 
-app.delete('/delete/:id', mechanic.delete);
+app.delete('/:id', mechanic.delete);
 
 module.exports = app;
