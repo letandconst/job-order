@@ -12,13 +12,13 @@ interface Mechanic {
 	totalJobs: string;
 }
 
-interface Products {
-	_id: string;
+export interface Products {
+	_id?: string;
 	name: string;
 	description: string;
 	price: number;
 	stockQuantity: number;
-	productImage: string;
+	productImage: File;
 }
 
 interface SelectedProducts {
@@ -26,7 +26,7 @@ interface SelectedProducts {
 	quantity: number;
 }
 
-interface WorkRequested {
+export interface WorkRequested {
 	request: string;
 	labor: number;
 }
@@ -69,15 +69,18 @@ interface DataContextValues {
 	jobStatus: { label: number; value: string }[];
 	api: string;
 	handleCloseModal: () => void;
+	showModal: boolean;
+	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 	showEditModal: boolean;
-	showDeleteModal: boolean;
 	setShowEditModal: React.Dispatch<React.SetStateAction<boolean>>;
+	showDeleteModal: boolean;
 	setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
 	selectedRow: any;
 	setSelectedRow: React.Dispatch<React.SetStateAction<object>>;
 	setJobOrders: React.Dispatch<React.SetStateAction<JobOrder[]>>;
 	setMechanics: React.Dispatch<React.SetStateAction<Mechanic[]>>;
 	setProducts: React.Dispatch<React.SetStateAction<Products[]>>;
+	updateProduct: (updatedProduct: Products) => void;
 }
 
 const Context = createContext<DataContextValues | undefined>(undefined);
@@ -99,16 +102,25 @@ const DataContext = ({ children }: DataContextProps) => {
 	const [products, setProducts] = useState<Products[]>([]);
 	const [mechanicOptions, setMechanicOptions] = useState<Option[]>([]);
 
+	// State for getting the selected row from table
+	const [selectedRow, setSelectedRow] = useState<SelectedRow | null>({});
+
 	// State for showing / closing modal
+	const [showModal, setShowModal] = useState(false);
 	const [showEditModal, setShowEditModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const handleCloseModal = () => {
 		setShowEditModal(false);
 		setShowDeleteModal(false);
+		setShowModal(false);
+		setSelectedRow(null);
 	};
 
-	// State for getting the selected row from table
-	const [selectedRow, setSelectedRow] = useState<SelectedRow>({});
+	const updateProduct = (updatedProduct: Products) => {
+		// Find and update the product in your products state
+		const updatedProducts = products.map((product) => (product._id === updatedProduct._id ? updatedProduct : product));
+		setProducts(updatedProducts);
+	};
 
 	const jobStatus = [
 		{
@@ -167,6 +179,9 @@ const DataContext = ({ children }: DataContextProps) => {
 		handleCloseModal,
 		selectedRow,
 		setSelectedRow,
+		showModal,
+		setShowModal,
+		updateProduct,
 	};
 
 	return <Context.Provider value={contextValues}>{children}</Context.Provider>;
