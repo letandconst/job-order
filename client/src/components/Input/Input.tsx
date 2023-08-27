@@ -8,11 +8,11 @@ interface InputFieldProps {
 	onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 	label: string;
 	defaultValue?: string | number;
-	isReadOnly?: boolean;
+	disabled?: boolean;
 	placeholder?: string;
 }
 
-const Input = ({ type, name, value, onChange, label, defaultValue, isReadOnly, placeholder }: InputFieldProps) => {
+const Input = ({ type, name, value, onChange, label, defaultValue, disabled, placeholder }: InputFieldProps) => {
 	return (
 		<>
 			<FormLabel>{label}</FormLabel>
@@ -22,9 +22,15 @@ const Input = ({ type, name, value, onChange, label, defaultValue, isReadOnly, p
 				value={value}
 				onChange={onChange}
 				defaultValue={defaultValue}
-				isReadOnly={isReadOnly}
+				disabled={disabled}
 				placeholder={placeholder ? placeholder : ''}
 				autoComplete='off'
+				sx={{
+					':disabled': {
+						opacity: '1',
+						bg: '#dfe1e9',
+					},
+				}}
 			/>
 		</>
 	);
