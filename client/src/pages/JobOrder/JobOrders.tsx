@@ -6,31 +6,12 @@ import Table from '../../components/DataTable/Table';
 import { jobOrdersColumn } from '../../components/DataTable/DataTableColumns/jobOrdersColumn';
 import { useData } from '../../context/DataContext';
 import ActionButton from '../../components/DataTable/ActionButtons/ActionButton';
-import { ProductsData } from '../Products';
+import { JobOrder } from '../../context/DataContext';
 import Modal from '../../components/Modal/Modal';
 import UpdateJobOrder from './modules/UpdateJobOrder';
 import AlertModal from '../../components/Modal/AlertModal';
 import axios from 'axios';
 import { Box } from '@chakra-ui/react';
-
-interface WorkRequested {
-	request: string;
-	labor: number;
-}
-interface JobOrdersData {
-	customerName: string;
-	address: string;
-	carModel: string;
-	plateNumber: string;
-	mobileNumber: string;
-	assignedMechanic: string;
-	products: ProductsData[];
-	workRequested: WorkRequested[];
-	totalLabor: number;
-	totalProductPrice: number;
-	totalPrice: number;
-	status: string;
-}
 
 const JobOrders = () => {
 	const { jobOrders, showEditModal, setJobOrders, setShowEditModal, showDeleteModal, setShowDeleteModal, handleCloseModal, selectedRow, setSelectedRow, api } = useData();
@@ -40,7 +21,7 @@ const JobOrders = () => {
 		navigate(`/job-orders/${selectedId}`);
 	};
 
-	const handleEdit = (selected: JobOrdersData) => {
+	const handleEdit = (selected: JobOrder) => {
 		setSelectedRow(selected);
 		console.log(selected);
 		setShowEditModal(true);
@@ -58,7 +39,7 @@ const JobOrders = () => {
 		}
 	};
 
-	const handleShowDelete = (selected: JobOrdersData) => {
+	const handleShowDelete = (selected: JobOrder) => {
 		setSelectedRow(selected);
 		setShowDeleteModal(true);
 	};

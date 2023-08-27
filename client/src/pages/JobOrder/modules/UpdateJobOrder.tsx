@@ -9,6 +9,7 @@ import { useData } from '../../../context/DataContext';
 interface SelectedRowData {
 	selectedRow: JobOrder;
 }
+
 const UpdateJobOrder = ({ selectedRow }: SelectedRowData) => {
 	const { customerName, address, carModel, plateNumber, mobileNumber, assignedMechanic, createdAt, products, status, workRequested } = selectedRow;
 
