@@ -7,6 +7,10 @@ import { jobOrdersColumn } from '../../components/DataTable/DataTableColumns/job
 import { useData } from '../../context/DataContext';
 import ActionButton from '../../components/DataTable/ActionButtons/ActionButton';
 import { ProductsData } from '../Products';
+import Modal from '../../components/Modal/Modal';
+import UpdateJobOrder from './modules/UpdateJobOrder';
+import AlertModal from '../../components/Modal/AlertModal';
+import axios from 'axios';
 
 interface WorkRequested {
 	request: string;
@@ -28,7 +32,7 @@ interface JobOrdersData {
 }
 
 const JobOrders = () => {
-	const { jobOrders } = useData();
+	const { jobOrders, showEditModal, setJobOrders, setShowEditModal, showDeleteModal, setShowDeleteModal, handleCloseModal, selectedRow, setSelectedRow, api } = useData();
 	const navigate = useNavigate();
 
 	const handleShow = async (selectedId: string) => {
@@ -36,11 +40,26 @@ const JobOrders = () => {
 	};
 
 	const handleEdit = (selected: JobOrdersData) => {
+		setSelectedRow(selected);
 		console.log(selected);
+		setShowEditModal(true);
 	};
 
-	const handleDelete = (selected: JobOrdersData) => {
-		console.log(selected);
+	const handleDelete = async () => {
+		try {
+			await axios.delete(`${api}/job/${selectedRow._id}`);
+			setShowDeleteModal(false);
+
+			const updatedJobOrders = jobOrders.filter((order) => order._id !== selectedRow._id);
+			setJobOrders(updatedJobOrders);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const handleShowDelete = (selected: JobOrdersData) => {
+		setSelectedRow(selected);
+		setShowDeleteModal(true);
 	};
 
 	const columns = jobOrdersColumn.map((column) => {
@@ -51,7 +70,7 @@ const JobOrders = () => {
 					<ActionButton
 						onView={() => handleShow(row.original._id)}
 						onEdit={() => handleEdit(row.original)}
-						onDelete={() => handleDelete(row.original)}
+						onDelete={() => handleShowDelete(row.original)}
 					/>
 				),
 			};
@@ -60,10 +79,24 @@ const JobOrders = () => {
 	});
 
 	return (
-		<Table
-			columns={columns}
-			data={jobOrders}
-		/>
+		<>
+			<Table
+				columns={columns}
+				data={jobOrders}
+			/>
+			<AlertModal
+				isOpen={showDeleteModal}
+				onClose={handleCloseModal}
+				onDelete={handleDelete}
+			/>
+			<Modal
+				modalTitle='Edit Job Order'
+				isOpen={showEditModal}
+				onClose={handleCloseModal}
+			>
+				<UpdateJobOrder selectedRow={selectedRow} />
+			</Modal>
+		</>
 	);
 };
 
