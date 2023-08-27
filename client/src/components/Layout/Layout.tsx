@@ -46,11 +46,10 @@ const SidebarContent = ({ onClose, display, ...rest }: SidebarProps) => {
 	};
 	return (
 		<Flex
-			transition='3s ease'
 			bg='#1E1E1E'
 			borderRight='1px'
 			borderRightColor={useColorModeValue('gray.200', 'gray.500')}
-			w={{ base: 'full', md: '400px' }}
+			w={{ base: 'full', lg: '250px', xl: '400px' }}
 			pos='fixed'
 			h='full'
 			{...rest}
@@ -71,12 +70,12 @@ const SidebarContent = ({ onClose, display, ...rest }: SidebarProps) => {
 						height='100%'
 						mx={{
 							base: '0',
-							md: 'auto',
+							lg: 'auto',
 						}}
 					/>
 
 					<CloseButton
-						display={{ base: 'flex', md: 'none' }}
+						display={{ base: 'flex', lg: 'none' }}
 						onClick={onClose}
 					/>
 				</Flex>
@@ -200,18 +199,18 @@ const MobileNav = ({ onOpen, ...rest }: { onOpen: () => void }) => {
 	return (
 		<Flex
 			className='mobile'
-			ml={{ base: 0, md: 60 }}
-			px={{ base: 4, md: 4 }}
+			ml={{ base: 0, lg: 60 }}
+			px='4'
 			height='20'
 			bg='#1E1E1E'
 			alignItems='center'
 			borderBottomWidth='1px'
 			borderBottomColor={useColorModeValue('gray.200', 'gray.500')}
-			justifyContent={{ base: 'space-between', md: 'flex-end' }}
+			justifyContent={{ base: 'space-between', lg: 'flex-end' }}
 			{...rest}
 			display={{
 				base: 'flex',
-				md: 'none',
+				lg: 'none',
 			}}
 		>
 			<Image
@@ -238,7 +237,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 		>
 			<SidebarContent
 				onClose={() => onClose}
-				display={{ base: 'none', md: 'flex' }}
+				display={{ base: 'none', lg: 'flex' }}
 			/>
 			<Drawer
 				autoFocus={false}
@@ -256,7 +255,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 			{/* mobilenav */}
 			<MobileNav onOpen={onOpen} />
 			<Box
-				ml={{ base: 0, md: '400px' }}
+				ml={{ base: 0, lg: '250px', xl: '400px' }}
 				p='32px'
 				sx={{
 					'.chakra-card': {
