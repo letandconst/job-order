@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { createContext, useEffect, useState, useContext, ReactNode } from 'react';
 import axios from 'axios';
 
@@ -30,7 +31,7 @@ interface WorkRequested {
 	labor: number;
 }
 
-interface JobOrder {
+export interface JobOrder {
 	_id: string;
 	customerName: string;
 	address: string;
@@ -47,9 +48,13 @@ interface JobOrder {
 	totalPrice: number;
 }
 
-interface Option {
+export interface Option {
 	value: string;
 	label: string;
+}
+
+interface SelectedRow {
+	[key: string]: any;
 }
 
 interface DataContextProps {
@@ -64,8 +69,15 @@ interface DataContextValues {
 	jobStatus: { label: number; value: string }[];
 	api: string;
 	handleCloseModal: () => void;
-	showModal: boolean;
-	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+	showEditModal: boolean;
+	showDeleteModal: boolean;
+	setShowEditModal: React.Dispatch<React.SetStateAction<boolean>>;
+	setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
+	selectedRow: any;
+	setSelectedRow: React.Dispatch<React.SetStateAction<object>>;
+	setJobOrders: React.Dispatch<React.SetStateAction<JobOrder[]>>;
+	setMechanics: React.Dispatch<React.SetStateAction<Mechanic[]>>;
+	setProducts: React.Dispatch<React.SetStateAction<Products[]>>;
 }
 
 const Context = createContext<DataContextValues | undefined>(undefined);
@@ -84,12 +96,19 @@ export function useData() {
 const DataContext = ({ children }: DataContextProps) => {
 	const [mechanics, setMechanics] = useState<Mechanic[]>([]);
 	const [jobOrders, setJobOrders] = useState<JobOrder[]>([]);
-	const [products, setProducts] = useState([]);
+	const [products, setProducts] = useState<Products[]>([]);
 	const [mechanicOptions, setMechanicOptions] = useState<Option[]>([]);
 
-	const [showModal, setShowModal] = useState(false);
+	// State for showing / closing modal
+	const [showEditModal, setShowEditModal] = useState(false);
+	const [showDeleteModal, setShowDeleteModal] = useState(false);
+	const handleCloseModal = () => {
+		setShowEditModal(false);
+		setShowDeleteModal(false);
+	};
 
-	const handleCloseModal = () => setShowModal(false);
+	// State for getting the selected row from table
+	const [selectedRow, setSelectedRow] = useState<SelectedRow>({});
 
 	const jobStatus = [
 		{
@@ -98,7 +117,7 @@ const DataContext = ({ children }: DataContextProps) => {
 		},
 		{
 			label: 2,
-			value: 'In-Progress',
+			value: 'In Progress',
 		},
 		{
 			label: 3,
@@ -133,14 +152,21 @@ const DataContext = ({ children }: DataContextProps) => {
 
 	const contextValues: DataContextValues = {
 		mechanics,
+		setMechanics,
 		jobOrders,
+		setJobOrders,
 		products,
+		setProducts,
 		mechanicOptions,
 		jobStatus,
 		api,
-		showModal,
-		setShowModal,
+		showEditModal,
+		setShowEditModal,
+		showDeleteModal,
+		setShowDeleteModal,
 		handleCloseModal,
+		selectedRow,
+		setSelectedRow,
 	};
 
 	return <Context.Provider value={contextValues}>{children}</Context.Provider>;
