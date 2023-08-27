@@ -45,6 +45,11 @@ exports.updateProduct = async (req, res) => {
 
 		updateData.updatedAt = new Date();
 
+		if (req.file) {
+			const result = await cloudinary.uploader.upload(req.file.path, { folder: 'images/products' });
+			updateData.productImage = result.secure_url;
+		}
+
 		if (stockQuantity !== undefined) {
 			await Product.findByIdAndUpdate(id, { stockQuantity });
 		}
