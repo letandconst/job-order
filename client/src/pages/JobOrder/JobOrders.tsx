@@ -11,6 +11,7 @@ import Modal from '../../components/Modal/Modal';
 import UpdateJobOrder from './modules/UpdateJobOrder';
 import AlertModal from '../../components/Modal/AlertModal';
 import axios from 'axios';
+import { Box } from '@chakra-ui/react';
 
 interface WorkRequested {
 	request: string;
@@ -80,6 +81,13 @@ const JobOrders = () => {
 
 	return (
 		<>
+			<Box
+				fontSize='36px'
+				fontWeight='700'
+				textTransform='uppercase'
+			>
+				Job Orders
+			</Box>
 			<Table
 				columns={columns}
 				data={jobOrders}

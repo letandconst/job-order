@@ -6,6 +6,7 @@ import ActionButton from '../components/DataTable/ActionButtons/ActionButton';
 import Modal from '../components/Modal/Modal';
 import axios from 'axios';
 import AlertModal from '../components/Modal/AlertModal';
+import { Box } from '@chakra-ui/react';
 
 interface MechanicData {
 	firstName: string;
@@ -63,6 +64,13 @@ const Mechanics = () => {
 
 	return (
 		<>
+			<Box
+				fontSize='36px'
+				fontWeight='700'
+				textTransform='uppercase'
+			>
+				Mechanics
+			</Box>
 			<Table
 				columns={columns}
 				data={mechanics}

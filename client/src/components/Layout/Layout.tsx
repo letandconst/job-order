@@ -264,17 +264,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 					},
 				}}
 			>
-				<Box
-					fontSize='36px'
-					fontWeight='700'
-					textTransform='uppercase'
-				>
-					Job Order Details
-				</Box>
-				<Card
-					mt='32px'
-					boxShadow='none'
-				>
+				<Card boxShadow='none'>
 					<CardBody p='0'>{children}</CardBody>
 				</Card>
 			</Box>

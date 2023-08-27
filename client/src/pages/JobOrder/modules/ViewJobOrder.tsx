@@ -88,6 +88,13 @@ const ViewJobOrder = () => {
 		<>
 			{currentJob ? (
 				<>
+					<Box
+						fontSize='36px'
+						fontWeight='700'
+						textTransform='uppercase'
+					>
+						Job Order Details
+					</Box>
 					<Flex
 						gap={{
 							base: '0',
@@ -97,6 +104,7 @@ const ViewJobOrder = () => {
 							base: 'column',
 							xl: 'row',
 						}}
+						mt='32px'
 					>
 						<Box
 							w='100%'

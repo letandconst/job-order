@@ -36,6 +36,7 @@ const Table = ({ columns, data }: DataTableProps) => {
 				base: 'scroll',
 				xl: 'unset',
 			}}
+			mt='32px'
 		>
 			<ChakraTable
 				variant='striped'

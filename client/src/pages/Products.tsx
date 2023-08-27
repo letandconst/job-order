@@ -6,6 +6,7 @@ import ActionButton from '../components/DataTable/ActionButtons/ActionButton';
 import axios from 'axios';
 import AlertModal from '../components/Modal/AlertModal';
 import Modal from '../components/Modal/Modal';
+import { Box } from '@chakra-ui/react';
 export interface ProductsData {
 	name: string;
 	desription: string;
@@ -61,6 +62,13 @@ const Products = () => {
 
 	return (
 		<>
+			<Box
+				fontSize='36px'
+				fontWeight='700'
+				textTransform='uppercase'
+			>
+				Products
+			</Box>
 			<Table
 				columns={columns}
 				data={products}

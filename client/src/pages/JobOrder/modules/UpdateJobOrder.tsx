@@ -100,13 +100,13 @@ const UpdateJobOrder = ({ selectedRow }: SelectedRowData) => {
 								label='Mechanic'
 								onChange={(e) => console.log(e.target.value)}
 								isDisabled={status === 'Completed' ? true : false}
+								value={currentJobMechanic?._id}
 							>
 								{mechanicOptions &&
 									mechanicOptions.map((option, i) => (
 										<option
 											key={i}
 											value={option.value}
-											selected={option.value === currentJobMechanic?._id}
 										>
 											{option.label}
 										</option>
@@ -127,7 +127,6 @@ const UpdateJobOrder = ({ selectedRow }: SelectedRowData) => {
 										<option
 											key={i}
 											value={option.value}
-											selected={option.value === status}
 										>
 											{option.value}
 										</option>
