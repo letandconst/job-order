@@ -6,9 +6,10 @@ interface ButtonProps {
 	textColor?: string;
 	onClick?: () => void;
 	type?: 'submit' | 'reset';
+	disabled?:boolean;
 }
 
-const Button = ({ bgColor, textColor, children, onClick, type }: PropsWithChildren<ButtonProps>) => {
+const Button = ({ bgColor, textColor, disabled, children, onClick, type }: PropsWithChildren<ButtonProps>) => {
 	return (
 		<>
 			<ChakraButton
@@ -16,6 +17,7 @@ const Button = ({ bgColor, textColor, children, onClick, type }: PropsWithChildr
 				textColor={textColor}
 				onClick={onClick}
 				type={type}
+				isDisabled={disabled}
 			>
 				{children}
 			</ChakraButton>
