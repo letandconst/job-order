@@ -37,18 +37,10 @@ const ImageUploader = ({ onImageUpload, currentImage }: ImageUploaderProps) => {
 			onMouseLeave={() => setIsHovered(false)}
 		>
 			<>
-				{!selectedImage && currentImage && (
+				
+				{!selectedImage &&  (
 					<Image
-						src={currentImage ? currentImage : '/image-placeholder.png'}
-						w='100%'
-						objectFit='contain'
-						h='100%'
-					/>
-				)}
-
-				{!currentImage && (
-					<Image
-						src={'/product-placeholder.png'}
+						src={currentImage ? currentImage : '/product-placeholder.png'}
 						w='100%'
 						objectFit='contain'
 						h='100%'
