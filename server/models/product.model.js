@@ -15,6 +15,7 @@ const ProductSchema = new mongoose.Schema({
 	},
 	stockQuantity: {
 		type: Number,
+		required: true,
 	},
 	productImage: String,
 	createdAt: { type: Date, default: Date.now },
