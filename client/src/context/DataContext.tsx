@@ -16,8 +16,8 @@ export interface Products {
 	_id?: string;
 	name: string;
 	description: string;
-	price: number;
-	stockQuantity: number;
+	price: number | undefined;
+	stockQuantity: number | undefined;
 	productImage: any;
 }
 
@@ -81,6 +81,7 @@ interface DataContextValues {
 	setMechanics: React.Dispatch<React.SetStateAction<Mechanic[]>>;
 	setProducts: React.Dispatch<React.SetStateAction<Products[]>>;
 	updateProduct: (updatedProduct: Products) => void;
+	setAddedData: React.Dispatch<React.SetStateAction<Products | null>>
 }
 
 const Context = createContext<DataContextValues | undefined>(undefined);
@@ -122,6 +123,9 @@ const DataContext = ({ children }: DataContextProps) => {
 		setProducts(updatedProducts);
 	};
 
+	const [addedData, setAddedData] = useState<Products | null>(null)
+
+
 	const jobStatus = [
 		{
 			label: 1,
@@ -160,7 +164,7 @@ const DataContext = ({ children }: DataContextProps) => {
 		};
 
 		fetchData();
-	}, []);
+	}, [addedData]);
 
 	const contextValues: DataContextValues = {
 		mechanics,
@@ -182,6 +186,7 @@ const DataContext = ({ children }: DataContextProps) => {
 		showModal,
 		setShowModal,
 		updateProduct,
+		setAddedData
 	};
 
 	return <Context.Provider value={contextValues}>{children}</Context.Provider>;
