@@ -8,8 +8,8 @@ export interface Mechanic {
 	lastName: string;
 	address: string;
 	mobileNumber: string;
-	profileImage: string;
-	totalJobs?: string;
+	profileImage: any;
+	totalJobs?: number;
 }
 
 export interface Products {
