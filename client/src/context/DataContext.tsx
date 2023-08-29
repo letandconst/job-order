@@ -2,14 +2,14 @@
 import React, { createContext, useEffect, useState, useContext, ReactNode } from 'react';
 import axios from 'axios';
 
-interface Mechanic {
-	_id: string;
+export interface Mechanic {
+	_id?: string;
 	firstName: string;
 	lastName: string;
 	address: string;
 	mobileNumber: string;
 	profileImage: string;
-	totalJobs: string;
+	totalJobs?: string;
 }
 
 export interface Products {
@@ -80,8 +80,7 @@ interface DataContextValues {
 	setJobOrders: React.Dispatch<React.SetStateAction<JobOrder[]>>;
 	setMechanics: React.Dispatch<React.SetStateAction<Mechanic[]>>;
 	setProducts: React.Dispatch<React.SetStateAction<Products[]>>;
-	updateProduct: (updatedProduct: Products) => void;
-	setAddedData: React.Dispatch<React.SetStateAction<Products | null>>
+	setData: React.Dispatch<React.SetStateAction<Products | Mechanic | null>>
 }
 
 const Context = createContext<DataContextValues | undefined>(undefined);
@@ -117,14 +116,7 @@ const DataContext = ({ children }: DataContextProps) => {
 		setSelectedRow(null);
 	};
 
-	const updateProduct = (updatedProduct: Products) => {
-		// Find and update the product in your products state
-		const updatedProducts = products.map((product) => (product._id === updatedProduct._id ? updatedProduct : product));
-		setProducts(updatedProducts);
-	};
-
-	const [addedData, setAddedData] = useState<Products | null>(null)
-
+	const [data, setData] = useState<Products | Mechanic |  null>(null)
 
 	const jobStatus = [
 		{
@@ -164,7 +156,7 @@ const DataContext = ({ children }: DataContextProps) => {
 		};
 
 		fetchData();
-	}, [addedData]);
+	}, [data]);
 
 	const contextValues: DataContextValues = {
 		mechanics,
@@ -185,8 +177,7 @@ const DataContext = ({ children }: DataContextProps) => {
 		setSelectedRow,
 		showModal,
 		setShowModal,
-		updateProduct,
-		setAddedData
+		setData
 	};
 
 	return <Context.Provider value={contextValues}>{children}</Context.Provider>;
