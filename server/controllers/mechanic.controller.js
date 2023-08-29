@@ -82,13 +82,13 @@ exports.get = async (req, res) => {
 
 		const assignedJobs = await Job.find({ assignedMechanic: mechanic._id });
 
-		console.log(assignedJobs);
-
 		const jobs = assignedJobs.map((job) => {
 			return {
 				workRequested: job.workRequested,
 				customerName: job.customerName,
 				carModel: job.carModel,
+				plateNumber: job.plateNumber,
+				status: job.status
 			};
 		});
 
