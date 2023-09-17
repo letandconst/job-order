@@ -12,7 +12,7 @@ import Button from '../../components/Button/Button';
 import AddNewProduct from './modules/AddNewProduct';
 
 const ProductsPage = () => {
-	const { products, setProducts, showModal, setShowModal, showEditModal, setShowEditModal, showDeleteModal, setShowDeleteModal, handleCloseModal, selectedRow, setSelectedRow, api, setData,} = useData();
+	const { products, setProducts, showModal, setShowModal, showEditModal, setShowEditModal, showDeleteModal, setShowDeleteModal, handleCloseModal, selectedRow, setSelectedRow, api, setData } = useData();
 
 	const handleAdd = async (addProduct: Products) => {
 		try {
@@ -26,14 +26,14 @@ const ProductsPage = () => {
 				}
 			});
 
-			 await axios.post(`${api}/product/add`, formData, {
+			await axios.post(`${api}/product/add`, formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data',
 				},
 			});
 
-			setData(addProduct)
-			
+			setData(addProduct);
+
 			setShowEditModal(false);
 		} catch (error) {
 			console.error('Error updating:', error);
