@@ -1,3 +1,4 @@
+import './css/fonts.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import ComponentsLibrary from './pages/components-library';
@@ -18,7 +19,9 @@ import Main from './pages/Main';
 import Mechanics from './pages/Mechanic/Mechanics';
 import ProductsPage from './pages/Products/Products';
 import JobOrders from './pages/JobOrder/JobOrders';
-import ViewJobOrder from './pages/JobOrder/modules/ViewJobOrder';
+import ViewJobOrder from './pages/JobOrder/ViewJobOrder/ViewJobOrder';
+import AddJobOrder from './pages/JobOrder/AddJobOrder/AddJobOrder';
+import TotalAmountContext from './context/TotalAmountContext';
 
 function App() {
 	return (
@@ -54,6 +57,17 @@ function App() {
 						element={
 							<Layout>
 								<JobOrders />
+							</Layout>
+						}
+					/>
+
+					<Route
+						path='/job-orders/add-new'
+						element={
+							<Layout>
+								<TotalAmountContext>
+									<AddJobOrder />
+								</TotalAmountContext>
 							</Layout>
 						}
 					/>
