@@ -99,6 +99,7 @@ const UpdateJobOrder = ({ selectedRow }: SelectedRowData) => {
 						<FormControl>
 							<Select
 								label='Mechanic'
+								name='assignedMechanic'
 								onChange={(e) => console.log(e.target.value)}
 								isDisabled={status === 'Completed' ? true : false}
 								value={currentJobMechanic?._id}
@@ -120,6 +121,7 @@ const UpdateJobOrder = ({ selectedRow }: SelectedRowData) => {
 							<Select
 								label='Status'
 								value={status}
+								name='status'
 								onChange={(e) => console.log(e.target.value)}
 								isDisabled={status === 'Completed' ? true : false}
 							>

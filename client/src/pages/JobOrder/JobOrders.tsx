@@ -12,6 +12,7 @@ import UpdateJobOrder from './modules/UpdateJobOrder';
 import AlertModal from '../../components/Modal/AlertModal';
 import axios from 'axios';
 import { Box } from '@chakra-ui/react';
+import Button from '../../components/Button/Button';
 
 const JobOrders = () => {
 	const { jobOrders, showEditModal, setJobOrders, setShowEditModal, showDeleteModal, setShowDeleteModal, handleCloseModal, selectedRow, setSelectedRow, api } = useData();
@@ -69,6 +70,12 @@ const JobOrders = () => {
 			>
 				Job Orders
 			</Box>
+			<Button
+				bgColor='green'
+				onClick={() => navigate(`/job-orders/add-new`)}
+			>
+				Add New
+			</Button>
 			<Table
 				columns={columns}
 				data={jobOrders}

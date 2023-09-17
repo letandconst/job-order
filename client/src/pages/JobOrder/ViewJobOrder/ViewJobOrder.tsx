@@ -4,7 +4,8 @@ import { useData } from '../../../context/DataContext';
 
 import { Text, Box, Flex, Divider } from '@chakra-ui/react';
 import dayjs from 'dayjs';
-import TabularData from './TabularData';
+import TabularData from './modules/TabularData';
+import { formatPrice } from '../../../utils/helpers';
 
 const Row = ({ label, index, value }: { label: string; index?: number; value: any }) => (
 	<Flex
@@ -49,6 +50,8 @@ const ViewJobOrder = () => {
 	const { jobOrders, mechanics } = useData();
 
 	const currentJob = jobOrders.find((jobOrder) => jobOrder._id === path.id);
+
+	console.log(currentJob);
 
 	const assignedMechanic = mechanics.find((mechanic) => mechanic._id === currentJob?.assignedMechanic);
 
@@ -209,7 +212,7 @@ const ViewJobOrder = () => {
 						justifyContent='space-between'
 					>
 						<Box minW='max-content'>Total Amount: </Box>
-						<Box>{currentJob.totalPrice.toFixed(2)}</Box>
+						<Box>{formatPrice(currentJob.totalPrice)}</Box>
 					</Flex>
 				</>
 			) : (
