@@ -7,14 +7,16 @@ interface SelectProps {
 	placeholder?: string;
 	label: string;
 	isDisabled?: boolean;
+	name: string;
 }
 
-const Select = ({ onChange, value, children, placeholder, label, isDisabled }: PropsWithChildren<SelectProps>) => {
+const Select = ({ onChange, name, value, children, placeholder, label, isDisabled }: PropsWithChildren<SelectProps>) => {
 	return (
 		<>
 			<FormLabel>{label}</FormLabel>
 			<ChakraSelect
 				onChange={onChange}
+				name={name}
 				placeholder={placeholder}
 				defaultValue={value}
 				mt='0!important'
