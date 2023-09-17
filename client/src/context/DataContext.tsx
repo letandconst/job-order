@@ -16,7 +16,7 @@ export interface Products {
 	_id?: string;
 	name: string;
 	description: string;
-	price: number | undefined;
+	price: number;
 	stockQuantity: number | undefined;
 	productImage: any;
 }
@@ -61,6 +61,11 @@ interface DataContextProps {
 	children: ReactNode;
 }
 
+export interface ServiceType {
+	name: string;
+	description: string;
+	amount: number;
+}
 interface DataContextValues {
 	mechanics: Mechanic[];
 	jobOrders: JobOrder[];
@@ -80,7 +85,8 @@ interface DataContextValues {
 	setJobOrders: React.Dispatch<React.SetStateAction<JobOrder[]>>;
 	setMechanics: React.Dispatch<React.SetStateAction<Mechanic[]>>;
 	setProducts: React.Dispatch<React.SetStateAction<Products[]>>;
-	setData: React.Dispatch<React.SetStateAction<Products | Mechanic | null>>
+	setData: React.Dispatch<React.SetStateAction<any | null>>;
+	serviceTypes: ServiceType[];
 }
 
 const Context = createContext<DataContextValues | undefined>(undefined);
@@ -101,6 +107,7 @@ const DataContext = ({ children }: DataContextProps) => {
 	const [jobOrders, setJobOrders] = useState<JobOrder[]>([]);
 	const [products, setProducts] = useState<Products[]>([]);
 	const [mechanicOptions, setMechanicOptions] = useState<Option[]>([]);
+	const [serviceTypes, setServiceTypes] = useState<ServiceType[]>([]);
 
 	// State for getting the selected row from table
 	const [selectedRow, setSelectedRow] = useState<SelectedRow | null>({});
@@ -116,7 +123,7 @@ const DataContext = ({ children }: DataContextProps) => {
 		setSelectedRow(null);
 	};
 
-	const [data, setData] = useState<Products | Mechanic |  null>(null)
+	const [data, setData] = useState<any | null>(null);
 
 	const jobStatus = [
 		{
@@ -136,13 +143,15 @@ const DataContext = ({ children }: DataContextProps) => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const [mechanicsResponse, jobOrdersResponse, productsResponse] = await Promise.all([axios.get(`${api}/mechanic`), axios.get(`${api}/job`), axios.get(`${api}/product`)]);
+				const [mechanicsResponse, jobOrdersResponse, productsResponse, serviceTypesResponse] = await Promise.all([axios.get(`${api}/mechanic`), axios.get(`${api}/job`), axios.get(`${api}/product`), axios.get(`${api}/service-type`)]);
 
 				setMechanics(mechanicsResponse.data);
 
 				setJobOrders(jobOrdersResponse.data);
 
 				setProducts(productsResponse.data);
+
+				setServiceTypes(serviceTypesResponse.data);
 
 				const mechanicOptions = mechanicsResponse.data.map(({ _id, firstName }: Mechanic) => ({
 					value: _id,
@@ -177,7 +186,8 @@ const DataContext = ({ children }: DataContextProps) => {
 		setSelectedRow,
 		showModal,
 		setShowModal,
-		setData
+		setData,
+		serviceTypes,
 	};
 
 	return <Context.Provider value={contextValues}>{children}</Context.Provider>;
