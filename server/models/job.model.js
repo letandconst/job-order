@@ -41,9 +41,9 @@ const JobSchema = new mongoose.Schema({
 			labor: Number,
 		},
 	],
-	totalLabor: Number,
-	totalProductPrice: Number,
-	totalPrice: Number,
+	totalLabor: { type: Number, default: 0 },
+	totalProductPrice: { type: Number, default: 0 },
+	totalPrice: { type: Number, default: 0 },
 	status: {
 		type: String,
 		default: 'Pending',
