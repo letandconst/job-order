@@ -5,19 +5,34 @@
 	"main": "src/index.js",
 	"scripts": {
 		"start": "node src/index.js",
-		"dev": "node src/index.js"
+		"dev": "nodemon src/index.js"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
+	"exports": {
+		"./GraphQLUpload.js": "./GraphQLUpload.js",
+		"./graphqlUploadExpress.js": "./graphqlUploadExpress.js",
+		"./graphqlUploadKoa.js": "./graphqlUploadKoa.js",
+		"./package.json": "./package.json",
+		"./processRequest.js": "./processRequest.js",
+		"./Upload.js": "./Upload.js"
+	},
 	"dependencies": {
+		"@apollo/server": "^4.10.4",
+		"@graphql-tools/load-files": "^7.0.0",
+		"@graphql-tools/merge": "^9.0.3",
+		"apollo-server-express": "^3.13.0",
 		"bcrypt": "^5.1.1",
 		"cloudinary": "^1.40.0",
 		"cors": "^2.8.5",
 		"dotenv": "^16.3.1",
 		"express": "^4.18.2",
+		"graphql": "^16.8.1",
+		"graphql-upload": "^16.0.2",
 		"jsonwebtoken": "^9.0.1",
 		"mongoose": "^7.4.4",
-		"multer": "^1.4.5-lts.1"
+		"multer": "^1.4.5-lts.1",
+		"nodemon": "^3.1.0"
 	}
 }

@@ -1,56 +1,57 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
+const mongoose = require('mongoose');
 const cloudinary = require('cloudinary').v2;
 
-const app = express();
+const { ApolloServer } = require('apollo-server-express');
+const { ApolloServerPluginCacheControl } = require('apollo-server-core');
+
+const typeDefs = require('../graphql/typeDefs');
+const resolvers = require('../graphql/resolvers');
 
 require('dotenv').config();
 
-app.use(express.json());
-app.use(
-	cors({
-		origin: 'http://127.0.0.1:5173',
-	})
-);
-
-// Routes
-const routes = require('../routes');
-
-// Access API
-app.get('/', (req, res) => {
-	res.json({ message: 'Job Order API v1' });
-});
-
-app.use('/', routes);
-
-// Connect to Database
-const URI = process.env.MONGODB_URL;
-mongoose.connect(URI, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-});
-
 // Cloudinary config
-
 cloudinary.config({
 	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
 	api_key: process.env.CLOUDINARY_API_KEY,
 	api_secret: process.env.CLOUDINARY_SECRET_KEY,
 });
 
-// Check connection state
+const app = express();
 
-const db = mongoose.connection;
-db.on('error', (err) => {
-	console.error('MongoDB connection error:', err);
+app.use(cors());
+app.use(express.json());
+
+const server = new ApolloServer({
+	cors: true,
+	typeDefs,
+	resolvers,
+	cache: {
+		max: 100,
+		ttl: 3600,
+	},
+	plugins: [ApolloServerPluginCacheControl({ defaultMaxAge: 60 })],
 });
 
-db.once('open', () => {
+const startServer = async () => {
+	await server.start();
+	server.applyMiddleware({ app, path: '/graphql' });
+
+	// Connect to Database
+	await mongoose.connect(process.env.MONGODB_URL, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+	});
+
 	console.log('Connected to the Database');
-});
 
-const port = process.env.PORT || 5000;
-app.listen(port, () => {
-	console.log('Listening on port', port);
+	const port = process.env.PORT || 5000;
+	app.listen(port, () => {
+		console.log(`Server ready at http://localhost:${port}/graphql`);
+	});
+};
+
+startServer().catch((err) => {
+	console.error('Error starting server:', err.message);
 });

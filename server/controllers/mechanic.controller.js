@@ -2,20 +2,15 @@ const Mechanic = require('../models/mechanic.model');
 const Job = require('../models/job.model');
 const cloudinary = require('cloudinary').v2;
 
-exports.add = async (req, res) => {
+const addMechanic = async (data) => {
 	try {
-		const { firstName, lastName, address, mobileNumber } = req.body;
-		let profileImage;
+		let { firstName, lastName, address, profileImage, mobileNumber } = data;
 
-		if (req.file) {
-			const result = await cloudinary.uploader.upload(req.file.path, { folder: 'images/mechanics' });
-			profileImage = result.secure_url;
+		if (profileImage) {
+			// TODO
+			// Apply profile image upload via cloudinary
 		} else {
-			profileImage = 'https://res.cloudinary.com/dle7cxxwp/image/upload/v1693145459/images/image-placeholder_wip8xx.png';
-		}
-
-		if (!firstName || !lastName || !address || !mobileNumber) {
-			return res.status(400).json({ error: 'All fields are required ⚠' });
+			profileImage = 'https://asset.cloudinary.com/dle7cxxwp/64f97c9a0891f191e62c4a3976224e4a';
 		}
 
 		const mechanic = new Mechanic({
@@ -28,81 +23,83 @@ exports.add = async (req, res) => {
 		});
 
 		await mechanic.save();
-		res.json({
-			message: 'Mechanic successfully Added ✔',
-		});
+		return mechanic;
 	} catch (error) {
-		return res.status(500).json({ message: error.message });
+		throw new Error(`Failed to create new mechanic: ${error.message}`);
 	}
 };
 
-exports.update = async (req, res) => {
+const updateMechanic = async (id, data) => {
 	try {
-		const { firstName, lastName, address, mobileNumber } = req.body;
-		const updatedData = {};
-
-		if (firstName) updatedData.firstName = firstName;
-		if (lastName) updatedData.lastName = lastName;
-		if (address) updatedData.address = address;
-		if (mobileNumber) updatedData.mobileNumber = mobileNumber;
-
-		if (req.file) {
-			const result = await cloudinary.uploader.upload(req.file.path, { folder: 'mechanics/image' });
-			updatedData.profileImage = result.secure_url;
+		const existingMechanic = await Mechanic.findById(id);
+		if (!existingMechanic) {
+			throw new Error('Mechanic not found');
 		}
 
-		const updatedMechanic = await Mechanic.findByIdAndUpdate(req.params.id, updatedData, { new: true });
-
-		if (!updatedMechanic) {
-			return res.status(404).json({ error: 'Mechanic not found' });
+		if (data.address) {
+			existingMechanic.address = data.address;
 		}
 
-		res.json(updatedMechanic);
-	} catch (error) {
-		res.status(500).json({ error: 'Could not update mechanic' });
-	}
-};
-
-exports.delete = async (req, res) => {
-	try {
-		await Mechanic.findByIdAndDelete(req.params.id);
-		res.json({ message: 'Mechanic has been deleted successfully!' });
-	} catch (error) {
-		return res.status(500).json({ message: error.message });
-	}
-};
-
-exports.get = async (req, res) => {
-	try {
-		const mechanic = await Mechanic.findById(req.params.id);
-
-		if (!mechanic) {
-			return res.status(404).json({ error: 'Mechanic not found' });
+		if (data.mobileNumber) {
+			existingMechanic.mobileNumber = data.mobileNumber;
 		}
 
-		const assignedJobs = await Job.find({ assignedMechanic: mechanic._id });
+		if (data.profileImage) {
+			existingMechanic.profileImage = data.profileImage;
+			// TODO
+		}
 
-		const jobs = assignedJobs.map((job) => {
-			return {
-				workRequested: job.workRequested,
-				customerName: job.customerName,
-				carModel: job.carModel,
-				plateNumber: job.plateNumber,
-				status: job.status
-			};
-		});
+		existingMechanic.updatedAt = new Date();
 
-		res.json({ mechanic, assignedJobs: jobs });
+		await existingMechanic.save();
+
+		return existingMechanic;
 	} catch (error) {
-		res.status(500).json({ error: 'Could not get mechanic' });
+		throw new Error(`Failed to update mechanic: ${error.message}`);
 	}
 };
 
-exports.getAll = async (req, res) => {
+const deleteMechanic = async (id) => {
 	try {
-		const mechanics = await Mechanic.find();
-		res.json(mechanics);
+		const mechanic = await Mechanic.findById(id);
+		if (!mechanic || mechanic.deleted) {
+			throw new Error('Mechanic not found');
+		}
+
+		mechanic.deleted = true;
+		await mechanic.save();
 	} catch (error) {
-		res.status(500).json({ error: 'Could not get mechanics' });
+		throw new Error(`Failed to delete this mechanic: ${error.message}`);
 	}
+};
+
+const getMechanic = async (id) => {
+	try {
+		const mechanic = await Mechanic.findById(id);
+
+		if (!mechanic || mechanic.deleted) {
+			throw new Error('Mechanic not found');
+		}
+
+		return mechanic;
+	} catch (error) {
+		throw new Error(`Failed to fetch this mechanic: ${error.message}`);
+	}
+};
+
+const getAllMechanics = async () => {
+	try {
+		const mechanics = await Mechanic.find({ deleted: { $ne: true } });
+		return mechanics;
+	} catch (error) {
+		throw new Error(`Failed to fetch all mechanics: ${error.message}`);
+	}
+};
+
+module.exports = {
+	addMechanic,
+	updateMechanic,
+	deleteMechanic,
+	getMechanic,
+	getAllMechanics,
 };

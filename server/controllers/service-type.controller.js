@@ -1,12 +1,8 @@
 const ServiceType = require('../models/service-type.model');
 
-exports.addServiceType = async (req, res) => {
+exports.addServiceType = async (input) => {
 	try {
-		const { name, description, amount } = req.body;
-
-		if (!name || !description || !amount) {
-			return res.status(400).json({ message: 'All fields are required ⚠' });
-		}
+		const { name, description, amount } = input;
 
 		const newServiceType = new ServiceType({
 			name,
@@ -15,47 +11,53 @@ exports.addServiceType = async (req, res) => {
 		});
 
 		await newServiceType.save();
-		res.json({
-			message: 'Service Type successfully Added ✔',
-		});
+		return newServiceType;
 	} catch (error) {
-		res.status(400).json({ message: error.message });
+		throw new Error(`Failed to add new service: ${error.message}`);
 	}
 };
 
-exports.updateServiceType = async (req, res) => {
+exports.updateServiceType = async (id, data) => {
 	try {
-		const { id } = req.params;
-		const { name, description, amount, ...updateData } = req.body;
+		const existingService = await ServiceType.findById(id);
+		if (!existingService) {
+			throw new Error('Service not found');
+		}
 
-		updateData.updatedAt = new Date();
+		if (data.description) {
+			existingService.description = data.description;
+		}
 
-		await ServiceType.findByIdAndUpdate(id, updateData);
+		if (data.amount) {
+			existingService.amount = data.amount;
+		}
 
-		res.json({ message: 'Service Type updated successfully' });
+		existingService.updatedAt = new Date();
+
+		await existingService.save();
+
+		return existingService;
 	} catch (error) {
-		res.status(500).json({ message: 'Error updating Service Type' });
+		throw new Error(`Failed to update this service: ${error.message}`);
 	}
 };
 
-exports.getAllServices = async (req, res) => {
+exports.getAllServices = async () => {
 	try {
 		const services = await ServiceType.find();
-		res.json(services);
+		return services;
 	} catch (error) {
-		res.status(500).json({ message: 'Error fetching services' });
+		throw new Error(`Failed to fetch services: ${error.message}`);
 	}
 };
 
-exports.deleteServiceType = async (req, res) => {
+exports.deleteServiceType = async (id) => {
 	try {
-		const { id } = req.params;
 		const deletedServiceType = await ServiceType.findByIdAndDelete(id);
 		if (!deletedServiceType) {
-			return res.status(404).json({ message: 'Service Type not found' });
+			throw new Error('Service not found');
 		}
-		res.json({ message: 'Service Type deleted successfully' });
 	} catch (error) {
-		res.status(500).json({ message: 'Error deleting Service Type' });
+		throw new Error(`Failed to delete this service: ${error.message}`);
 	}
 };
